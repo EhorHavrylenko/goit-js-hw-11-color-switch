@@ -12,24 +12,21 @@ const startBtn = document.querySelector('button[data-action="start"]');
 const stopBtn = document.querySelector('button[data-action="stop"]');
 
 startBtn.addEventListener('click', startHandler);
-let isActive = false; // переменная для проверки активен ли запуск изменения фона
+stopBtn.addEventListener('click', stopHandler)
 
-function startHandler(){
-    if(isActive){ // предотвращаем повторный запуск
-        return;
-    }
-    isActive = true; // присваиваем тру после клика
+let intervalId = null;
 
-  const startId = setInterval(() => {
+function startHandler({ target }){
+  target.disabled = true;
+  intervalId = setInterval(() => {
         bodyRef.style.backgroundColor = colors[Math.floor(Math.random() * 6)] // рендомно выбираем индекс из массива для окраски фона
     },1000)
 
-    stopBtn.addEventListener('click', stopHandler);
+}
 
-    function stopHandler(){ 
-        clearInterval(startId) // останавливаем изменение фона по айди запуска
-        isActive = false; // возвращаем в Фолс индикатор актиновсти изменения фона
-     }
+function stopHandler({target}){ 
+  startBtn.disabled = false;
+  clearInterval(intervalId) // останавливаем изменение фона по айди запуска
 }
 
 
